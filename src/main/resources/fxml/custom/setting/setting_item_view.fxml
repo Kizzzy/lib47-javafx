@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<fx:root type="AnchorPane" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <HBox spacing="8.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+              AnchorPane.topAnchor="0.0">
+            <Label fx:id="label" minWidth="72.0" text="Label" AnchorPane.leftAnchor="16.0" AnchorPane.topAnchor="0.0"/>
+            <AnchorPane fx:id="root" HBox.hgrow="ALWAYS"/>
+        </HBox>
+    </children>
+    <stylesheets>
+        <URL value="@setting_group_view.css"/>
+    </stylesheets>
+</fx:root>

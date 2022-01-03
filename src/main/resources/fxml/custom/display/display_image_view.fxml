@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.layout.*?>
+<fx:root type="AnchorPane" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <VBox spacing="8.0" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0"
+              AnchorPane.topAnchor="8.0">
+            <HBox alignment="CENTER_LEFT" spacing="8.0">
+                <CheckBox fx:id="canvas_black" text="Canvas黑色"/>
+                <CheckBox fx:id="image_filter" text="过滤背景"/>
+                <Slider fx:id="slider" blockIncrement="0.5" majorTickUnit="2.0" min="-1.0" minorTickCount="1"
+                        snapToTicks="true" value="-1.0"/>
+            </HBox>
+            <ScrollPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                        AnchorPane.topAnchor="0.0">
+                <content>
+                    <Canvas fx:id="canvas" height="400.0" width="400.0"/>
+                </content>
+            </ScrollPane>
+        </VBox>
+    </children>
+</fx:root>

@@ -1,0 +1,9 @@
+.label {
+    -fx-font-weight: BOLD;
+    -fx-background-color: white;
+    -fx-padding: 4;
+}
+
+.group-box {
+    -fx-border-color: black;
+}
