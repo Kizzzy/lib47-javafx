@@ -31,6 +31,10 @@ public class DisplayTabView extends TabPane {
     }
     
     public void show(int type, Object param) {
+        if (param == null) {
+            return;
+        }
+        
         DisplayTabData data = viewKvs.get(type);
         if (data == null) {
             DisplayViewAdapter view = null;
