@@ -7,6 +7,7 @@ import cn.kizzzy.helper.LogHelper;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -21,7 +22,7 @@ public class DisplayOperator<T> {
     
     private T context;
     
-    private Map<String, Class<? extends Display<T>>> displayKvs
+    private Map<String, List<DisplayInfo<T>>> displayKvs
         = new HashMap<>();
     
     public DisplayOperator(String namespace, DisplayTabView tabView, Class<T> contextClass) {
@@ -34,9 +35,26 @@ public class DisplayOperator<T> {
         this.context = context;
     }
     
-    public boolean load() {
+    public void load() {
         try {
-            List<Class<?>> list = ClassFinderHelper.find(new ClassFilter() {
+            List<Class<?>> list1 = ClassFinderHelper.find(new ClassFilter() {
+                @Override
+                public String packageRoot() {
+                    return "cn.kizzzy.javafx.display";
+                }
+                
+                @Override
+                public boolean isRecursive() {
+                    return true;
+                }
+                
+                @Override
+                public boolean accept(Class<?> clazz) {
+                    return clazz.isAnnotationPresent(DisplayAttribute.class);
+                }
+            });
+            
+            List<Class<?>> list2 = ClassFinderHelper.find(new ClassFilter() {
                 @Override
                 public String packageRoot() {
                     return namespace;
@@ -53,31 +71,45 @@ public class DisplayOperator<T> {
                 }
             });
             
+            initialAttribute(list1, list2);
+            
+        } catch (Exception e) {
+            LogHelper.error(null, e);
+        }
+    }
+    
+    private void initialAttribute(List<Class<?>>... lists) {
+        for (List<Class<?>> list : lists) {
             for (Class<?> clazz : list) {
                 DisplayAttribute flag = clazz.getAnnotation(DisplayAttribute.class);
                 for (String suffix : flag.suffix()) {
-                    displayKvs.put(suffix, (Class<? extends Display<T>>) clazz);
+                    List<DisplayInfo<T>> temp = displayKvs.computeIfAbsent(
+                        suffix, k -> new LinkedList<>()
+                    );
+                    temp.add(new DisplayInfo<>(flag, (Class<? extends Display<T>>) clazz));
                 }
             }
-            
-            return true;
-        } catch (Exception e) {
-            LogHelper.error(null, e);
-            return false;
         }
+        
+        displayKvs.values().forEach(temp -> temp.sort((x, y) -> y.attr.priority() - x.attr.priority()));
     }
     
     public void display(String path) {
         String ext = FileHelper.getExtension(path);
-        Class<? extends Display<T>> clazz = displayKvs.get(ext);
-        if (clazz != null) {
-            try {
-                Display<T> display = clazz.getDeclaredConstructor(contextClass, String.class)
-                    .newInstance(context, path);
-                DisplayAAA aaa = display.load();
-                tabView.show(aaa.type, aaa.param);
-            } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-                LogHelper.error("display error: ", e);
+        List<DisplayInfo<T>> temp = displayKvs.get(ext);
+        if (temp != null) {
+            for (DisplayInfo<T> info : temp) {
+                try {
+                    Display<T> display = info.clazz.getDeclaredConstructor(contextClass, String.class)
+                        .newInstance(context, path);
+                    DisplayAAA args = display.load();
+                    if (args != null && args.param != null) {
+                        tabView.show(args);
+                        return;
+                    }
+                } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                    LogHelper.error("display error: ", e);
+                }
             }
         }
     }
