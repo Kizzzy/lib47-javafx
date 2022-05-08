@@ -1,6 +1,7 @@
 package cn.kizzzy.javafx.setting;
 
 import cn.kizzzy.helper.LogHelper;
+import cn.kizzzy.javafx.Stageable;
 import cn.kizzzy.javafx.custom.CustomControlParamter;
 import cn.kizzzy.javafx.custom.ICustomControl;
 import cn.kizzzy.javafx.setting.parser.BooleanFieldParser;
@@ -9,17 +10,21 @@ import cn.kizzzy.javafx.setting.parser.IFieldParser;
 import cn.kizzzy.javafx.setting.parser.ListFieldParser;
 import cn.kizzzy.javafx.setting.parser.NumberFieldParser;
 import cn.kizzzy.javafx.setting.parser.StringFieldParser;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import java.lang.reflect.Field;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-@CustomControlParamter(fxml = "/fxml/custom/setting/setting_dialog_view.fxml")
-public class SettingDialog extends AnchorPane implements ICustomControl {
+abstract class SettingDialogView extends AnchorPane implements ICustomControl {
     
     @FXML
     protected VBox root;
@@ -33,36 +38,60 @@ public class SettingDialog extends AnchorPane implements ICustomControl {
     @FXML
     protected Button btn_save_exit;
     
-    private IFieldParser[] parsers;
-    
-    public SettingDialog() {
-        super();
+    public SettingDialogView() {
         init();
     }
+}
+
+@CustomControlParamter(fxml = "/fxml/custom/setting/setting_dialog_view.fxml")
+public class SettingDialog extends SettingDialogView implements Initializable, Stageable<SettingDialog.Args> {
     
-    public <T> void show(T target, SettingConfigs configs) {
+    public static class Args {
+        public Object target;
+        public SettingConfigs configs;
+    }
+    
+    private Stage stage;
+    
+    private IFieldParser[] parsers;
+    
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        btn_cancel.setOnAction(this::OnExit);
+        btn_save.setOnAction(this::OnExit);
+        btn_save_exit.setOnAction(this::OnExit);
+    }
+    
+    private void OnExit(ActionEvent event) {
+        if (stage != null) {
+            stage.hide();
+        }
+    }
+    
+    public void show(Stage stage, Args args) {
+        this.stage = stage;
         try {
             root.getChildren().clear();
             
-            TransferArgs args = new TransferArgs();
-            args.shower = this::show;
-            args.configs = configs;
+            TransferArgs transferArgs = new TransferArgs();
+            transferArgs.shower = this::show;
+            transferArgs.configs = args.configs;
             
             parsers = new IFieldParser[]{
                 new EnumFieldParser(),
                 new BooleanFieldParser(),
                 new StringFieldParser(),
                 new NumberFieldParser(),
-                new ListFieldParser(args)
+                new ListFieldParser(transferArgs)
             };
             
-            show(root, target, configs);
+            show(root, args.target, args.configs);
         } catch (Exception e) {
             LogHelper.error(null, e);
         }
     }
     
-    private <T> void show(Pane root, T target, SettingConfigs configs) {
+    private void show(Pane root, Object target, SettingConfigs configs) {
         SettingGroup childHolder = null;
         
         Field[] fields = target.getClass().getDeclaredFields();
