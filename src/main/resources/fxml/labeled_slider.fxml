@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root type="AnchorPane" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <HBox alignment="CENTER_LEFT" prefHeight="24.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <Label fx:id="name_lbl"/>
+                <Slider fx:id="slider" max="20.0" min="1.0" value="20.0" HBox.hgrow="ALWAYS"/>
+                <Label fx:id="value_lbl" alignment="CENTER" minWidth="24.0" text="20"/>
+            </children>
+        </HBox>
+    </children>
+</fx:root>
