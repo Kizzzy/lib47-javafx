@@ -53,7 +53,7 @@ public class JavafxHelper {
         }
     }
     
-    public static void initContextMenu(final Node target, final Supplier<MenuItemArg[]> supplier) {
+    public static void initContextMenu(final Node target, final Supplier<Iterable<MenuItemArg>> supplier) {
         final ContextMenu menu = new ContextMenu();
         menu.setAutoHide(true);
         target.setOnContextMenuRequested(event -> {
@@ -65,6 +65,10 @@ public class JavafxHelper {
     }
     
     public static <T> ContextMenu initContextMenu(final Node target, final Supplier<T> supplier, final MenuItemArg[] args) {
+        return initContextMenu(target, supplier, Arrays.asList(args));
+    }
+    
+    public static <T> ContextMenu initContextMenu(final Node target, final Supplier<T> supplier, final Iterable<MenuItemArg> args) {
         final ContextMenu menu = new ContextMenu();
         target.setOnContextMenuRequested(event -> {
             T context = supplier.get();
@@ -78,20 +82,28 @@ public class JavafxHelper {
     }
     
     public static ContextMenu initContextMenu(ContextMenu contextMenu, MenuItemArg[] args) {
+        return initContextMenu(contextMenu, Arrays.asList(args));
+    }
+    
+    public static ContextMenu initContextMenu(ContextMenu contextMenu, Iterable<MenuItemArg> args) {
         Objects.requireNonNull(contextMenu);
         Objects.requireNonNull(args);
-        Arrays.sort(args);
-        if (args.length > 0) {
-            int group = args[0].getGroup();
-            MenuNode menuRoot = new MenuNode(contextMenu.getItems());
-            for (MenuItemArg arg : args) {
-                if (arg.getGroup() != group) {
-                    contextMenu.getItems().add(new SeparatorMenuItem());
-                    group = arg.getGroup();
-                }
-                initContextMenuImpl(menuRoot, arg);
+        
+        int group = -1;
+        MenuNode menuRoot = null;
+        for (MenuItemArg arg : args) {
+            if (menuRoot == null) {
+                group = arg.getGroup();
+                menuRoot = new MenuNode(contextMenu.getItems());
             }
+            
+            if (arg.getGroup() != group) {
+                contextMenu.getItems().add(new SeparatorMenuItem());
+                group = arg.getGroup();
+            }
+            initContextMenuImpl(menuRoot, arg);
         }
+        
         return contextMenu;
     }
     
