@@ -61,16 +61,13 @@ public class DisplayTabView extends TabPane {
             try {
                 DisplayViewAdapter view = viewInfo.clazz.newInstance();
                 
-                AnchorPane anchorPane = new AnchorPane();
-                anchorPane.getChildren().add(view);
-                
                 AnchorPane.setLeftAnchor(view, 0d);
                 AnchorPane.setTopAnchor(view, 0d);
                 AnchorPane.setRightAnchor(view, 0d);
                 AnchorPane.setBottomAnchor(view, 0d);
                 
                 DisplayTab tab = new DisplayTab(viewInfo.attr.title());
-                tab.setContent(anchorPane);
+                tab.setContent(view);
                 tab.setClosable(true);
                 tab.setOnCloseRequest(event -> viewKvs.remove(args.type));
                 tab.setCallback(() -> viewKvs.remove(args.type));
