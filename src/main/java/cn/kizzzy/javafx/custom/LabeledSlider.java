@@ -85,8 +85,7 @@ public class LabeledSlider extends LabeledSliderView implements Initializable {
     }
     
     private void OnValueChanged(Observable observable, Number oldValue, Number newValue) {
-        int nThread = (int) Math.round((Double) newValue);
-        value_lbl.setText("" + nThread);
+        value_lbl.setText("" + newValue.intValue());
     }
 }
 
