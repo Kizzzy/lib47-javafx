@@ -107,10 +107,15 @@ public class DisplayOperator<T> {
                         tabView.show(args);
                         return;
                     }
-                } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
+                         NoSuchMethodException e) {
                     LogHelper.error("display error: ", e);
                 }
             }
         }
+    }
+    
+    public void stop() {
+        tabView.stop();
     }
 }

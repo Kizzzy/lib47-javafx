@@ -54,6 +54,12 @@ public class DisplayTabView extends TabPane {
         }
     }
     
+    public void stop() {
+        for (DisplayTabData data : viewKvs.values()) {
+            data.getSubView().stop();
+        }
+    }
+    
     public void show(DisplayAAA args) {
         DisplayTabData data = viewKvs.get(args.type);
         DisplayViewInfo viewInfo = infoKvs.get(args.type);
@@ -69,7 +75,10 @@ public class DisplayTabView extends TabPane {
                 DisplayTab tab = new DisplayTab(viewInfo.attr.title());
                 tab.setContent(view);
                 tab.setClosable(true);
-                tab.setOnCloseRequest(event -> viewKvs.remove(args.type));
+                tab.setOnCloseRequest(event -> {
+                    viewKvs.remove(args.type);
+                    view.stop();
+                });
                 tab.setCallback(() -> viewKvs.remove(args.type));
                 
                 getTabs().add(tab);
