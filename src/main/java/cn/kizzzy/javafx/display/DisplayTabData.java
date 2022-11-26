@@ -1,23 +1,24 @@
 package cn.kizzzy.javafx.display;
 
 import javafx.scene.control.Tab;
+import javafx.scene.layout.AnchorPane;
 
 public class DisplayTabData {
     
     private final Tab tab;
     
-    private final DisplayViewAdapter subView;
+    private final AnchorPane view;
     
-    public DisplayTabData(Tab tab, DisplayViewAdapter subView) {
+    public DisplayTabData(Tab tab, AnchorPane view) {
         this.tab = tab;
-        this.subView = subView;
+        this.view = view;
     }
     
     public Tab getTab() {
         return tab;
     }
     
-    public DisplayViewAdapter getSubView() {
-        return subView;
+    public AnchorPane getView() {
+        return view;
     }
 }

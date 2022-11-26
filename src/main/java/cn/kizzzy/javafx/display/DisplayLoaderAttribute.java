@@ -7,7 +7,8 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface DisplayAttribute {
+public @interface DisplayLoaderAttribute {
+    
     String[] suffix();
     
     int priority() default 0;

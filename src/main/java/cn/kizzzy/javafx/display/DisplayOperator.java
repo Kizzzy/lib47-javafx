@@ -1,38 +1,31 @@
 package cn.kizzzy.javafx.display;
 
+import cn.kizzzy.base.AttributeWithClass;
 import cn.kizzzy.clazz.ClassFilter;
 import cn.kizzzy.clazz.ClassFinderHelper;
 import cn.kizzzy.helper.FileHelper;
 import cn.kizzzy.helper.LogHelper;
+import cn.kizzzy.vfs.IPackage;
+import cn.kizzzy.vfs.tree.Leaf;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("unchecked")
-public class DisplayOperator<T> {
+public class DisplayOperator {
     
     private final String namespace;
     
     private final DisplayTabView tabView;
     
-    private final Class<T> contextClass;
-    
-    private T context;
-    
-    private Map<String, List<DisplayInfo<T>>> displayKvs
+    private final Map<String, List<AttributeWithClass<DisplayLoaderAttribute, DisplayLoader>>> displayKvs
         = new HashMap<>();
     
-    public DisplayOperator(String namespace, DisplayTabView tabView, Class<T> contextClass) {
+    public DisplayOperator(String namespace, DisplayTabView tabView) {
         this.namespace = namespace;
         this.tabView = tabView;
-        this.contextClass = contextClass;
-    }
-    
-    public void setContext(T context) {
-        this.context = context;
     }
     
     public void load() {
@@ -50,7 +43,7 @@ public class DisplayOperator<T> {
                 
                 @Override
                 public boolean accept(Class<?> clazz) {
-                    return clazz.isAnnotationPresent(DisplayAttribute.class);
+                    return clazz.isAnnotationPresent(DisplayLoaderAttribute.class);
                 }
             });
             
@@ -67,7 +60,7 @@ public class DisplayOperator<T> {
                 
                 @Override
                 public boolean accept(Class<?> clazz) {
-                    return clazz.isAnnotationPresent(DisplayAttribute.class);
+                    return clazz.isAnnotationPresent(DisplayLoaderAttribute.class);
                 }
             });
             
@@ -81,12 +74,12 @@ public class DisplayOperator<T> {
     private void initialAttribute(List<Class<?>>... lists) {
         for (List<Class<?>> list : lists) {
             for (Class<?> clazz : list) {
-                DisplayAttribute flag = clazz.getAnnotation(DisplayAttribute.class);
-                for (String suffix : flag.suffix()) {
-                    List<DisplayInfo<T>> temp = displayKvs.computeIfAbsent(
+                DisplayLoaderAttribute attr = clazz.getAnnotation(DisplayLoaderAttribute.class);
+                for (String suffix : attr.suffix()) {
+                    List<AttributeWithClass<DisplayLoaderAttribute, DisplayLoader>> temp = displayKvs.computeIfAbsent(
                         suffix, k -> new LinkedList<>()
                     );
-                    temp.add(new DisplayInfo<>(flag, (Class<? extends Display<T>>) clazz));
+                    temp.add(new AttributeWithClass<>(attr, (Class<? extends DisplayLoader>) clazz));
                 }
             }
         }
@@ -94,21 +87,15 @@ public class DisplayOperator<T> {
         displayKvs.values().forEach(temp -> temp.sort((x, y) -> y.attr.priority() - x.attr.priority()));
     }
     
-    public void display(String path) {
-        String ext = FileHelper.getExtension(path);
-        List<DisplayInfo<T>> temp = displayKvs.get(ext);
+    public void display(IPackage vfs, Leaf leaf) {
+        String ext = FileHelper.getExtension(leaf.path);
+        List<AttributeWithClass<DisplayLoaderAttribute, DisplayLoader>> temp = displayKvs.get(ext);
         if (temp != null) {
-            for (DisplayInfo<T> info : temp) {
+            for (AttributeWithClass<DisplayLoaderAttribute, DisplayLoader> info : temp) {
                 try {
-                    Display<T> display = info.clazz.getDeclaredConstructor(contextClass, String.class)
-                        .newInstance(context, path);
-                    DisplayAAA args = display.load();
-                    if (args != null && args.param != null) {
-                        tabView.show(args);
-                        return;
-                    }
-                } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
-                         NoSuchMethodException e) {
+                    DisplayLoader display = info.clazz.newInstance();
+                    tabView.show(display, vfs, leaf);
+                } catch (InstantiationException | IllegalAccessException e) {
                     LogHelper.error("display error: ", e);
                 }
             }

@@ -7,9 +7,7 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface DisplayViewAttribute {
+public @interface RegisterAttribute {
     
-    DisplayType type();
-    
-    String title();
+    String name();
 }
