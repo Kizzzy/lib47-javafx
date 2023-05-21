@@ -1,5 +1,7 @@
-package cn.kizzzy.javafx.custom;
+package cn.kizzzy.javafx.control;
 
+import cn.kizzzy.javafx.JavafxControl;
+import cn.kizzzy.javafx.JavafxControlParameter;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.StringProperty;
@@ -9,16 +11,14 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.TextAlignment;
 
-@CustomControlParamter(fxml = "/fxml/lebeled_textarea.fxml")
-public class LabeledTextArea extends AnchorPane implements ICustomControl {
+abstract class LabeledTextAreaView extends AnchorPane implements JavafxControl {
     
-    public LabeledTextArea() {
-        super();
+    public LabeledTextAreaView() {
         init();
     }
     
     @FXML
-    private Label title;
+    protected Label title;
     
     public StringProperty titleProperty() {
         return title.textProperty();
@@ -32,6 +32,8 @@ public class LabeledTextArea extends AnchorPane implements ICustomControl {
         return titleProperty().get();
     }
     
+    // ----------------------------------------
+    
     public ObjectProperty<TextAlignment> titleTextAlignmentProperty() {
         return title.textAlignmentProperty();
     }
@@ -44,20 +46,7 @@ public class LabeledTextArea extends AnchorPane implements ICustomControl {
         return titleTextAlignmentProperty().get();
     }
     
-    @FXML
-    private TextArea content;
-    
-    public StringProperty contentProperty() {
-        return content.textProperty();
-    }
-    
-    public void setContent(String title) {
-        contentProperty().set(title);
-    }
-    
-    public String getContent() {
-        return contentProperty().get();
-    }
+    // ----------------------------------------
     
     public DoubleProperty titleMinWidthProperty() {
         return title.minWidthProperty();
@@ -70,4 +59,26 @@ public class LabeledTextArea extends AnchorPane implements ICustomControl {
     public double getTitleMinWidth() {
         return titleMinWidthProperty().get();
     }
+    
+    // ----------------------------------------
+    
+    @FXML
+    protected TextArea content;
+    
+    public StringProperty contentProperty() {
+        return content.textProperty();
+    }
+    
+    public void setContent(String content) {
+        contentProperty().set(content);
+    }
+    
+    public String getContent() {
+        return contentProperty().get();
+    }
+}
+
+@JavafxControlParameter(fxml = "/fxml/control/labeled_textarea.fxml")
+public class LabeledTextArea extends LabeledTextAreaView {
+    
 }

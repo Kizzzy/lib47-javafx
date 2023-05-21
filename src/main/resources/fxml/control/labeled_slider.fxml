@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<fx:root type="AnchorPane" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <HBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <Label fx:id="name_lbl" minWidth="-Infinity" text="Title">
+                    <HBox.margin>
+                        <Insets left="8.0" right="8.0"/>
+                    </HBox.margin>
+                </Label>
+                <Slider fx:id="slider" max="20.0" min="1.0" value="20.0" HBox.hgrow="ALWAYS"/>
+                <Label fx:id="value_lbl" alignment="CENTER" minWidth="-Infinity" text="20">
+                    <HBox.margin>
+                        <Insets left="8.0" right="8.0"/>
+                    </HBox.margin>
+                </Label>
+            </children>
+        </HBox>
+    </children>
+</fx:root>

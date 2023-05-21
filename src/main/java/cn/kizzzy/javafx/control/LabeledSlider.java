@@ -1,5 +1,7 @@
-package cn.kizzzy.javafx.custom;
+package cn.kizzzy.javafx.control;
 
+import cn.kizzzy.javafx.JavafxControl;
+import cn.kizzzy.javafx.JavafxControlParameter;
 import javafx.beans.Observable;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.StringProperty;
@@ -12,16 +14,10 @@ import javafx.scene.layout.AnchorPane;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-abstract class LabeledSliderView extends AnchorPane implements ICustomControl {
+abstract class LabeledSliderView extends AnchorPane implements JavafxControl {
     
     @FXML
     protected Label name_lbl;
-    
-    @FXML
-    protected Slider slider;
-    
-    @FXML
-    protected Label value_lbl;
     
     public LabeledSliderView() {
         init();
@@ -39,6 +35,11 @@ abstract class LabeledSliderView extends AnchorPane implements ICustomControl {
         return nameProperty().get();
     }
     
+    // ----------------------------------------
+    
+    @FXML
+    protected Slider slider;
+    
     public DoubleProperty valueProperty() {
         return slider.valueProperty();
     }
@@ -50,6 +51,8 @@ abstract class LabeledSliderView extends AnchorPane implements ICustomControl {
     public double getValue() {
         return valueProperty().get();
     }
+    
+    // ----------------------------------------
     
     public DoubleProperty minProperty() {
         return slider.minProperty();
@@ -63,6 +66,8 @@ abstract class LabeledSliderView extends AnchorPane implements ICustomControl {
         return minProperty().get();
     }
     
+    // ----------------------------------------
+    
     public DoubleProperty maxProperty() {
         return slider.maxProperty();
     }
@@ -74,18 +79,35 @@ abstract class LabeledSliderView extends AnchorPane implements ICustomControl {
     public double getMax() {
         return maxProperty().get();
     }
+    
+    // ----------------------------------------
+    
+    @FXML
+    protected Label value_lbl;
+    
+    public StringProperty tipsProperty() {
+        return value_lbl.textProperty();
+    }
+    
+    public void setTips(String tips) {
+        tipsProperty().set(tips);
+    }
+    
+    public String getTips() {
+        return tipsProperty().get();
+    }
 }
 
-@CustomControlParamter(fxml = "/fxml/labeled_slider.fxml")
+@JavafxControlParameter(fxml = "/fxml/control/labeled_slider.fxml")
 public class LabeledSlider extends LabeledSliderView implements Initializable {
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        slider.valueProperty().addListener(this::OnValueChanged);
+        valueProperty().addListener(this::OnValueChanged);
     }
     
     private void OnValueChanged(Observable observable, Number oldValue, Number newValue) {
-        value_lbl.setText("" + newValue.intValue());
+        setTips("" + newValue.intValue());
     }
 }
 

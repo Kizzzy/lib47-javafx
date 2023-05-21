@@ -1,15 +1,15 @@
 package cn.kizzzy.javafx.setting;
 
-import cn.kizzzy.javafx.custom.CustomControlParamter;
-import cn.kizzzy.javafx.custom.ICustomControl;
+import cn.kizzzy.javafx.JavafxControl;
+import cn.kizzzy.javafx.JavafxControlParameter;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
-@CustomControlParamter(fxml = "/fxml/custom/setting/setting_item_view.fxml")
-public class SettingItem extends AnchorPane implements ICustomControl {
+@JavafxControlParameter(fxml = "/fxml/control/setting/setting_item_view.fxml")
+public class SettingItem extends AnchorPane implements JavafxControl {
     
     @FXML
     protected AnchorPane root;

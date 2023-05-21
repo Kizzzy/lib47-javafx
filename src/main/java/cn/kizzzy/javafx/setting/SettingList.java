@@ -1,8 +1,8 @@
 package cn.kizzzy.javafx.setting;
 
 import cn.kizzzy.helper.LogHelper;
-import cn.kizzzy.javafx.custom.CustomControlParamter;
-import cn.kizzzy.javafx.custom.ICustomControl;
+import cn.kizzzy.javafx.JavafxControl;
+import cn.kizzzy.javafx.JavafxControlParameter;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -13,8 +13,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-@CustomControlParamter(fxml = "/fxml/custom/setting/setting_list_view.fxml")
-public class SettingList extends VBox implements ICustomControl, Initializable {
+@JavafxControlParameter(fxml = "/fxml/control/setting/setting_list_view.fxml")
+public class SettingList extends VBox implements JavafxControl, Initializable {
     @FXML
     private VBox root;
     

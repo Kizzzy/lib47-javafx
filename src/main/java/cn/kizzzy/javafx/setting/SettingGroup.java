@@ -1,7 +1,7 @@
 package cn.kizzzy.javafx.setting;
 
-import cn.kizzzy.javafx.custom.CustomControlParamter;
-import cn.kizzzy.javafx.custom.ICustomControl;
+import cn.kizzzy.javafx.JavafxControl;
+import cn.kizzzy.javafx.JavafxControlParameter;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -9,8 +9,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
-@CustomControlParamter(fxml = "/fxml/custom/setting/setting_group_view.fxml")
-public class SettingGroup extends AnchorPane implements ICustomControl {
+@JavafxControlParameter(fxml = "/fxml/control/setting/setting_group_view.fxml")
+public class SettingGroup extends AnchorPane implements JavafxControl {
     
     @FXML
     protected VBox root;

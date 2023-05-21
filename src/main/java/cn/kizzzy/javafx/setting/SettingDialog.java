@@ -1,9 +1,9 @@
 package cn.kizzzy.javafx.setting;
 
 import cn.kizzzy.helper.LogHelper;
+import cn.kizzzy.javafx.JavafxControl;
+import cn.kizzzy.javafx.JavafxControlParameter;
 import cn.kizzzy.javafx.Stageable;
-import cn.kizzzy.javafx.custom.CustomControlParamter;
-import cn.kizzzy.javafx.custom.ICustomControl;
 import cn.kizzzy.javafx.setting.parser.BooleanFieldParser;
 import cn.kizzzy.javafx.setting.parser.EnumFieldParser;
 import cn.kizzzy.javafx.setting.parser.IFieldParser;
@@ -24,7 +24,7 @@ import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-abstract class SettingDialogView extends AnchorPane implements ICustomControl {
+abstract class SettingDialogView extends AnchorPane implements JavafxControl {
     
     @FXML
     protected VBox root;
@@ -43,7 +43,7 @@ abstract class SettingDialogView extends AnchorPane implements ICustomControl {
     }
 }
 
-@CustomControlParamter(fxml = "/fxml/custom/setting/setting_dialog_view.fxml")
+@JavafxControlParameter(fxml = "/fxml/control/setting/setting_dialog_view.fxml")
 public class SettingDialog extends SettingDialogView implements Initializable, Stageable<SettingDialog.Args> {
     
     public static class Args {

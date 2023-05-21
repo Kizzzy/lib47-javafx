@@ -1,7 +1,7 @@
 package cn.kizzzy.javafx.setting;
 
-import cn.kizzzy.javafx.custom.CustomControlParamter;
-import cn.kizzzy.javafx.custom.ICustomControl;
+import cn.kizzzy.javafx.JavafxControl;
+import cn.kizzzy.javafx.JavafxControlParameter;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -11,8 +11,8 @@ import javafx.scene.layout.AnchorPane;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-@CustomControlParamter(fxml = "/fxml/custom/setting/setting_list_item_view.fxml")
-public class SettingListItem extends AnchorPane implements ICustomControl, Initializable {
+@JavafxControlParameter(fxml = "/fxml/control/setting/setting_list_item_view.fxml")
+public class SettingListItem extends AnchorPane implements JavafxControl, Initializable {
     
     @FXML
     private AnchorPane root;

@@ -1,18 +1,18 @@
-package cn.kizzzy.javafx.custom;
+package cn.kizzzy.javafx;
 
 import javafx.fxml.FXMLLoader;
 
 import java.io.IOException;
 
-public interface ICustomControl {
+public interface JavafxControl {
     
     default void init() {
         try {
             Class<?> clazz = this.getClass();
-            CustomControlParamter paramter;
+            JavafxControlParameter paramter;
             
             do {
-                paramter = clazz.getAnnotation(CustomControlParamter.class);
+                paramter = clazz.getAnnotation(JavafxControlParameter.class);
                 clazz = clazz.getSuperclass();
             } while (paramter == null && clazz != null);
             
