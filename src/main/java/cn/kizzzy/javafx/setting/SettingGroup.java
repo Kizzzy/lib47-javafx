@@ -9,7 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
-@JavafxControlParameter(fxml = "/fxml/control/setting/setting_group_view.fxml")
+@JavafxControlParameter(fxml = "/fxml/setting/setting_group_view.fxml")
 public class SettingGroup extends AnchorPane implements JavafxControl {
     
     @FXML

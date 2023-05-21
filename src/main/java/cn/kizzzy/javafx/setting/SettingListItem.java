@@ -11,7 +11,7 @@ import javafx.scene.layout.AnchorPane;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-@JavafxControlParameter(fxml = "/fxml/control/setting/setting_list_item_view.fxml")
+@JavafxControlParameter(fxml = "/fxml/setting/setting_list_item_view.fxml")
 public class SettingListItem extends AnchorPane implements JavafxControl, Initializable {
     
     @FXML

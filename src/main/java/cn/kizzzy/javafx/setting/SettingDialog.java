@@ -43,7 +43,7 @@ abstract class SettingDialogView extends AnchorPane implements JavafxControl {
     }
 }
 
-@JavafxControlParameter(fxml = "/fxml/control/setting/setting_dialog_view.fxml")
+@JavafxControlParameter(fxml = "/fxml/setting/setting_dialog_view.fxml")
 public class SettingDialog extends SettingDialogView implements Initializable, Stageable<SettingDialog.Args> {
     
     public static class Args {

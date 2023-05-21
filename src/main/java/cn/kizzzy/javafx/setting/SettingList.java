@@ -13,7 +13,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-@JavafxControlParameter(fxml = "/fxml/control/setting/setting_list_view.fxml")
+@JavafxControlParameter(fxml = "/fxml/setting/setting_list_view.fxml")
 public class SettingList extends VBox implements JavafxControl, Initializable {
     @FXML
     private VBox root;

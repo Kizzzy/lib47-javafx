@@ -8,7 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
-@JavafxControlParameter(fxml = "/fxml/control/setting/setting_item_view.fxml")
+@JavafxControlParameter(fxml = "/fxml/setting/setting_item_view.fxml")
 public class SettingItem extends AnchorPane implements JavafxControl {
     
     @FXML
