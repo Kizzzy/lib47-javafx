@@ -13,13 +13,17 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-@JavafxControlParameter(fxml = "/fxml/setting/setting_list_view.fxml")
-public class SettingList extends VBox implements JavafxControl, Initializable {
-    @FXML
-    private VBox root;
+abstract class SettingListView extends VBox implements JavafxControl {
     
     @FXML
-    private Button addBtn;
+    protected VBox root;
+    
+    @FXML
+    protected Button addBtn;
+}
+
+@JavafxControlParameter(fxml = "/fxml/setting/setting_list_view.fxml")
+public class SettingList extends SettingListView implements Initializable {
     
     private final TransferArgs args;
     
@@ -28,7 +32,6 @@ public class SettingList extends VBox implements JavafxControl, Initializable {
     private final Class<?> clazz;
     
     public SettingList(TransferArgs args, List<Object> list, Class<?> clazz) {
-        super();
         this.args = args;
         this.list = list;
         this.clazz = clazz;

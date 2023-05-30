@@ -1,21 +1,16 @@
 package cn.kizzzy.javafx.control;
 
-import cn.kizzzy.javafx.JavafxControl;
 import cn.kizzzy.javafx.JavafxControlParameter;
+import cn.kizzzy.javafx.JavafxView;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.TextAlignment;
 
-abstract class LabeledTextAreaView extends AnchorPane implements JavafxControl {
-    
-    public LabeledTextAreaView() {
-        init();
-    }
+abstract class LabeledTextAreaView extends JavafxView {
     
     @FXML
     protected Label title;

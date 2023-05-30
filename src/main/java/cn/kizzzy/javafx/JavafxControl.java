@@ -2,36 +2,32 @@ package cn.kizzzy.javafx;
 
 import javafx.fxml.FXMLLoader;
 
-import java.io.IOException;
-
 public interface JavafxControl {
     
     default void init() {
         try {
             Class<?> clazz = this.getClass();
-            JavafxControlParameter paramter;
+            JavafxControlParameter parameter;
             
             do {
-                paramter = clazz.getAnnotation(JavafxControlParameter.class);
+                parameter = clazz.getAnnotation(JavafxControlParameter.class);
                 clazz = clazz.getSuperclass();
-            } while (paramter == null && clazz != null);
+            } while (parameter == null && clazz != null);
             
-            
-            if (paramter == null) {
-                throw new IllegalArgumentException("can not find annotation, " + this.getClass());
+            if (parameter == null) {
+                throw new IllegalArgumentException(JavafxControlParameter.class.getSimpleName() + " is not found");
             }
             
-            String fxml = paramter.fxml();
-            if (fxml.equals("")) {
-                throw new IllegalArgumentException("fxml parameter is empty, " + this.getClass());
+            String fxml = parameter.fxml();
+            if (fxml == null || "".equals(fxml)) {
+                throw new IllegalArgumentException("fxml parameter is empty");
             }
             
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(this.getClass().getResource(fxml));
+            FXMLLoader loader = new FXMLLoader(this.getClass().getResource(fxml));
             loader.setRoot(this);
-            loader.setController(this);
+            loader.setControllerFactory(c -> this);
             loader.load();
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }

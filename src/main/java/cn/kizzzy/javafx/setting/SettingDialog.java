@@ -1,8 +1,8 @@
 package cn.kizzzy.javafx.setting;
 
 import cn.kizzzy.helper.LogHelper;
-import cn.kizzzy.javafx.JavafxControl;
 import cn.kizzzy.javafx.JavafxControlParameter;
+import cn.kizzzy.javafx.JavafxView;
 import cn.kizzzy.javafx.Stageable;
 import cn.kizzzy.javafx.setting.parser.BooleanFieldParser;
 import cn.kizzzy.javafx.setting.parser.EnumFieldParser;
@@ -24,7 +24,7 @@ import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-abstract class SettingDialogView extends AnchorPane implements JavafxControl {
+abstract class SettingDialogView extends JavafxView {
     
     @FXML
     protected VBox root;
@@ -37,10 +37,6 @@ abstract class SettingDialogView extends AnchorPane implements JavafxControl {
     
     @FXML
     protected Button btn_save_exit;
-    
-    public SettingDialogView() {
-        init();
-    }
 }
 
 @JavafxControlParameter(fxml = "/fxml/setting/setting_dialog_view.fxml")

@@ -1,20 +1,18 @@
 package cn.kizzzy.javafx.control;
 
-import cn.kizzzy.javafx.JavafxControl;
 import cn.kizzzy.javafx.JavafxControlParameter;
-import javafx.beans.Observable;
+import cn.kizzzy.javafx.JavafxView;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
-import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-abstract class LabeledSliderView extends AnchorPane implements JavafxControl {
+abstract class LabeledSliderView extends JavafxView {
     
     @FXML
     protected Label name_lbl;
@@ -103,11 +101,9 @@ public class LabeledSlider extends LabeledSliderView implements Initializable {
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        valueProperty().addListener(this::OnValueChanged);
-    }
-    
-    private void OnValueChanged(Observable observable, Number oldValue, Number newValue) {
-        setTips("" + newValue.intValue());
+        valueProperty().addListener((observable, oldValue, newValue) -> {
+            setTips("" + newValue.intValue());
+        });
     }
 }
 

@@ -11,14 +11,17 @@ import javafx.scene.layout.AnchorPane;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+abstract class SettingListItemView extends AnchorPane implements JavafxControl {
+    
+    @FXML
+    protected AnchorPane root;
+    
+    @FXML
+    protected Button removeBtn;
+}
+
 @JavafxControlParameter(fxml = "/fxml/setting/setting_list_item_view.fxml")
-public class SettingListItem extends AnchorPane implements JavafxControl, Initializable {
-    
-    @FXML
-    private AnchorPane root;
-    
-    @FXML
-    private Button removeBtn;
+public class SettingListItem extends SettingListItemView implements Initializable {
     
     private final SettingList settingList;
     
@@ -27,7 +30,6 @@ public class SettingListItem extends AnchorPane implements JavafxControl, Initia
     private final TransferArgs args;
     
     public SettingListItem(SettingList settingList, Object obj, TransferArgs args) {
-        super();
         this.settingList = settingList;
         this.obj = obj;
         this.args = args;

@@ -22,12 +22,6 @@
 
         <dependency>
             <groupId>cn.kizzzy</groupId>
-            <artifactId>lib47-toolkit</artifactId>
-            <version>${lib47-version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>cn.kizzzy</groupId>
             <artifactId>lib47-vfs</artifactId>
             <version>${lib47-version}</version>
         </dependency>

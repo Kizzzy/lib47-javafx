@@ -1,8 +1,8 @@
 package cn.kizzzy.javafx.control;
 
 import cn.kizzzy.helper.StringHelper;
-import cn.kizzzy.javafx.JavafxControl;
 import cn.kizzzy.javafx.JavafxControlParameter;
+import cn.kizzzy.javafx.JavafxView;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.StringProperty;
@@ -10,7 +10,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
@@ -19,11 +18,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-abstract class LabeledChooserView extends AnchorPane implements JavafxControl {
-    
-    public LabeledChooserView() {
-        init();
-    }
+abstract class LabeledChooserView extends JavafxView {
     
     @FXML
     protected LabeledTextField ltf;
