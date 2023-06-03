@@ -2,15 +2,20 @@ package cn.kizzzy.javafx.common;
 
 import cn.kizzzy.helper.StringHelper;
 import javafx.animation.FadeTransition;
+import javafx.application.Platform;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.MouseEvent;
@@ -18,6 +23,7 @@ import javafx.scene.input.TransferMode;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.util.Duration;
+import javafx.util.StringConverter;
 
 import java.io.File;
 import java.util.Arrays;
@@ -157,6 +163,29 @@ public class JavafxHelper {
             if (event.getDragboard().hasFiles()) {
                 callback.accept(event.getDragboard().getFiles());
             }
+        });
+    }
+    
+    public static <T> void setComboBoxEditable(ComboBox<T> comboBox, ObservableList<T> source, StringConverter<T> converter) {
+        comboBox.setEditable(true);
+        comboBox.setItems(new FilteredList<>(source, p -> true));
+        
+        comboBox.getEditor().textProperty().addListener((o, oldValue, newValue) -> {
+            final TextField editor = comboBox.getEditor();
+            final Object selected = comboBox.getSelectionModel().getSelectedItem();
+            
+            Platform.runLater(() -> {
+                if (selected == null || !selected.equals(converter.fromString(editor.getText()))) {
+                    ((FilteredList<T>) comboBox.getItems()).setPredicate(item -> {
+                        if (converter.toString(item).contains(newValue)) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    });
+                    comboBox.show();
+                }
+            });
         });
     }
 }
