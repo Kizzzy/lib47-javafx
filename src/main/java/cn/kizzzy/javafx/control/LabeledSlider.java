@@ -17,10 +17,6 @@ abstract class LabeledSliderView extends JavafxView {
     @FXML
     protected Label name_lbl;
     
-    public LabeledSliderView() {
-        init();
-    }
-    
     public StringProperty nameProperty() {
         return name_lbl.textProperty();
     }
