@@ -15,6 +15,10 @@ abstract class LabeledTextFieldView extends JavafxView {
     @FXML
     protected Label title;
     
+    public Label getTitleLb() {
+        return title;
+    }
+    
     public StringProperty titleProperty() {
         return title.textProperty();
     }
@@ -59,6 +63,10 @@ abstract class LabeledTextFieldView extends JavafxView {
     
     @FXML
     protected TextField content;
+    
+    public TextField getContentTf() {
+        return content;
+    }
     
     public StringProperty contentProperty() {
         return content.textProperty();

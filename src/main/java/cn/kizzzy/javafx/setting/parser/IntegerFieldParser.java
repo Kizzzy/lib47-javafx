@@ -6,7 +6,7 @@ import javafx.scene.control.TextField;
 
 import java.lang.reflect.Field;
 
-public class NumberFieldParser implements IFieldParser {
+public class IntegerFieldParser implements IFieldParser {
     
     @Override
     public boolean accept(final Class<?> clazz) {
