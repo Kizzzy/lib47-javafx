@@ -15,12 +15,13 @@ public class EnumFieldParser implements IFieldParser {
     
     @Override
     public Node createNode(final Class<?> clazz, final Field field, final Object target) {
-        ComboBox<Object> comboBox = new ComboBox<>();
-        comboBox.getItems().addAll(clazz.getEnumConstants());
-        
         try {
             field.setAccessible(true);
-            comboBox.valueProperty().setValue(field.get(target));
+            Object value = field.get(target);
+            
+            ComboBox<Object> comboBox = new ComboBox<>();
+            comboBox.getItems().addAll(clazz.getEnumConstants());
+            comboBox.valueProperty().setValue(value);
             comboBox.valueProperty().addListener((ob, ooo, nnn) -> {
                 try {
                     field.setAccessible(true);

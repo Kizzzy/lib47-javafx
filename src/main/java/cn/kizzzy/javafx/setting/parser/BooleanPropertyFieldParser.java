@@ -21,10 +21,12 @@ public class BooleanPropertyFieldParser extends AbstractFieldParser<Boolean, Boo
     
     @Override
     public Node createNode(final Class<?> clazz, final Field field, final Object target) {
-        CheckBox checkBox = new CheckBox();
         try {
             field.setAccessible(true);
-            checkBox.selectedProperty().setValue(getValue(field, target));
+            boolean value = getValue(field, target);
+            
+            CheckBox checkBox = new CheckBox();
+            checkBox.selectedProperty().setValue(value);
             checkBox.selectedProperty().addListener((ob, oldValue, newValue) -> {
                 try {
                     field.setAccessible(true);

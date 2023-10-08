@@ -15,10 +15,12 @@ public class BooleanFieldParser implements IFieldParser {
     
     @Override
     public Node createNode(final Class<?> clazz, final Field field, final Object target) {
-        CheckBox checkBox = new CheckBox();
         try {
             field.setAccessible(true);
-            checkBox.selectedProperty().setValue((boolean) field.get(target));
+            boolean value = (boolean) field.get(target);
+            
+            CheckBox checkBox = new CheckBox();
+            checkBox.selectedProperty().setValue(value);
             checkBox.selectedProperty().addListener((ob, ooo, nnn) -> {
                 try {
                     field.setAccessible(true);

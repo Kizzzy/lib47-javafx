@@ -21,14 +21,15 @@ public class EnumPropertyFieldParser extends AbstractFieldParser<Enum<?>, Object
     
     @Override
     public Node createNode(final Class<?> clazz, final Field field, final Object target) {
-        Class<?> enumType = ClassHelper.getGenericClass(clazz);
-        
-        ComboBox<Object> comboBox = new ComboBox<>();
-        comboBox.getItems().addAll(enumType.getEnumConstants());
-        
         try {
             field.setAccessible(true);
-            comboBox.valueProperty().setValue(getValue(field, target));
+            Object value = getValue(field, target);
+            
+            Class<?> enumType = ClassHelper.getGenericClass(clazz);
+            
+            ComboBox<Object> comboBox = new ComboBox<>();
+            comboBox.getItems().addAll(enumType.getEnumConstants());
+            comboBox.valueProperty().setValue(value);
             comboBox.valueProperty().addListener((ob, oldValue, newValue) -> {
                 try {
                     field.setAccessible(true);

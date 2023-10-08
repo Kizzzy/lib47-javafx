@@ -42,9 +42,9 @@ public class ListFieldParser implements IFieldParser {
         
         try {
             field.setAccessible(true);
+            List<Object> value = (List<Object>) field.get(target);
             
-            List<Object> list = (List<Object>) field.get(target);
-            return new SettingList(args, list, config.genericType);
+            return new SettingList(args, value, config.genericType);
         } catch (IllegalAccessException e) {
             LogHelper.error(null, e);
         } finally {

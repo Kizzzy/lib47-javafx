@@ -1,5 +1,6 @@
 package cn.kizzzy.javafx.setting;
 
+import cn.kizzzy.config.Ignore;
 import cn.kizzzy.helper.LogHelper;
 import cn.kizzzy.javafx.JavafxControlParameter;
 import cn.kizzzy.javafx.JavafxView;
@@ -111,17 +112,24 @@ public class SettingDialog extends SettingDialogView implements Initializable, S
             };
             
             show(root, args.target, args.configs);
+            
+            SettingHelper.adjustLabel(root);
         } catch (Exception e) {
             LogHelper.error(null, e);
         }
     }
     
     private void show(Pane root, Object target, SettingConfigs configs) {
-        SettingGroup childHolder = null;
+        SettingGroup group = null;
         
         Class<?> clazz = target.getClass();
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
+            Ignore ignore = field.getAnnotation(Ignore.class);
+            if (ignore != null) {
+                continue;
+            }
+            
             if (Modifier.isStatic(field.getModifiers()) || Modifier.isFinal(field.getModifiers())) {
                 continue;
             }
@@ -134,16 +142,16 @@ public class SettingDialog extends SettingDialogView implements Initializable, S
                 }
             }
             
-            if (childHolder == null) {
-                childHolder = new SettingGroup();
-                childHolder.setLabel(clazz.getSimpleName());
+            if (group == null) {
+                group = new SettingGroup();
+                group.setLabel(clazz.getSimpleName());
                 
-                root.getChildren().add(childHolder);
+                root.getChildren().add(group);
                 
-                AnchorPane.setLeftAnchor(childHolder, 0d);
-                AnchorPane.setTopAnchor(childHolder, 0d);
-                AnchorPane.setRightAnchor(childHolder, 0d);
-                AnchorPane.setBottomAnchor(childHolder, 0d);
+                AnchorPane.setLeftAnchor(group, 0d);
+                AnchorPane.setTopAnchor(group, 0d);
+                AnchorPane.setRightAnchor(group, 0d);
+                AnchorPane.setBottomAnchor(group, 0d);
             }
             
             Class<?> fieldType = field.getType();
@@ -156,10 +164,10 @@ public class SettingDialog extends SettingDialogView implements Initializable, S
                         found = true;
                         
                         SettingItem item = new SettingItem();
-                        item.setLabel(config == null || config.alias == null ? field.getName() : config.alias);
+                        item.setLabel(SettingHelper.getFieldName(field, config));
                         item.addChild(node);
                         
-                        childHolder.addChild(item);
+                        group.addChild(item);
                         break;
                     }
                 }
@@ -172,7 +180,7 @@ public class SettingDialog extends SettingDialogView implements Initializable, S
                         temp = fieldType.newInstance();
                         field.set(target, temp);
                     }
-                    show(childHolder.getRoot(), temp, configs);
+                    show(group.getRoot(), temp, configs);
                 } catch (Exception e) {
                     LogHelper.error(null, e);
                 } finally {
