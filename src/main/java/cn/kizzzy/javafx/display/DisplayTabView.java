@@ -1,18 +1,21 @@
 package cn.kizzzy.javafx.display;
 
 import cn.kizzzy.base.AttributeWithInstance;
-import cn.kizzzy.helper.LogHelper;
 import cn.kizzzy.vfs.IPackage;
 import cn.kizzzy.vfs.tree.Leaf;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class DisplayTabView extends TabPane {
+    
+    private static final Logger logger = LoggerFactory.getLogger(DisplayTabView.class);
     
     private RegisterOperator registerOperator;
     
@@ -66,7 +69,7 @@ public class DisplayTabView extends TabPane {
                         data = new DisplayTabData(tab, view);
                         dataKvs.put(awi, data);
                     } catch (Exception e) {
-                        LogHelper.error("initial view error", e);
+                        logger.error("initial view error", e);
                     }
                 }
                 
@@ -75,7 +78,11 @@ public class DisplayTabView extends TabPane {
                         getSelectionModel().select(data.getTab());
                     }
                     
-                    awi.instance.show(data.getView(), display, vfs, leaf);
+                    try {
+                        awi.instance.show(data.getView(), display, vfs, leaf);
+                    } catch (Exception e) {
+                        logger.info("show {} error", awi.attr.name(), e);
+                    }
                 }
             }
         }

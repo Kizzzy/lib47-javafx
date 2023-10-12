@@ -4,9 +4,10 @@ import cn.kizzzy.base.AttributeWithClass;
 import cn.kizzzy.clazz.ClassFilter;
 import cn.kizzzy.clazz.ClassFinderHelper;
 import cn.kizzzy.helper.FileHelper;
-import cn.kizzzy.helper.LogHelper;
 import cn.kizzzy.vfs.IPackage;
 import cn.kizzzy.vfs.tree.Leaf;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -15,6 +16,8 @@ import java.util.Map;
 
 @SuppressWarnings("unchecked")
 public class DisplayOperator {
+    
+    private static final Logger logger = LoggerFactory.getLogger(DisplayOperator.class);
     
     private final String namespace;
     
@@ -67,7 +70,7 @@ public class DisplayOperator {
             initialAttribute(list1, list2);
             
         } catch (Exception e) {
-            LogHelper.error(null, e);
+            logger.error("list display error", e);
         }
     }
     
@@ -96,7 +99,7 @@ public class DisplayOperator {
                     DisplayLoader display = info.clazz.newInstance();
                     tabView.show(display, vfs, leaf);
                 } catch (InstantiationException | IllegalAccessException e) {
-                    LogHelper.error("display error: ", e);
+                    logger.error("display error: ", e);
                 }
             }
         }

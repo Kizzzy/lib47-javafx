@@ -1,7 +1,6 @@
 package cn.kizzzy.javafx.setting;
 
 import cn.kizzzy.config.Ignore;
-import cn.kizzzy.helper.LogHelper;
 import cn.kizzzy.javafx.JavafxControlParameter;
 import cn.kizzzy.javafx.JavafxView;
 import cn.kizzzy.javafx.Stageable;
@@ -23,6 +22,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -59,6 +60,8 @@ public class SettingDialog extends SettingDialogView implements Initializable, S
         public SettingConfigs configs;
         public Consumer<ResultType> callback;
     }
+    
+    private static final Logger logger = LoggerFactory.getLogger(SettingDialog.class);
     
     private Args args;
     private Stage stage;
@@ -115,7 +118,7 @@ public class SettingDialog extends SettingDialogView implements Initializable, S
             
             SettingHelper.adjustLabel(root);
         } catch (Exception e) {
-            LogHelper.error(null, e);
+            logger.error("show setting dialog error", e);
         }
     }
     
@@ -182,7 +185,7 @@ public class SettingDialog extends SettingDialogView implements Initializable, S
                     }
                     show(group.getRoot(), temp, configs);
                 } catch (Exception e) {
-                    LogHelper.error(null, e);
+                    logger.error("show object error", e);
                 } finally {
                     field.setAccessible(false);
                 }

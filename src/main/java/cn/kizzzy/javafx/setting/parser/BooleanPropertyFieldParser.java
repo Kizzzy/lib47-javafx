@@ -1,6 +1,5 @@
 package cn.kizzzy.javafx.setting.parser;
 
-import cn.kizzzy.helper.LogHelper;
 import javafx.beans.binding.BooleanExpression;
 import javafx.beans.property.BooleanProperty;
 import javafx.scene.Node;
@@ -11,7 +10,7 @@ import java.lang.reflect.Field;
 public class BooleanPropertyFieldParser extends AbstractFieldParser<Boolean, BooleanProperty> {
     
     public BooleanPropertyFieldParser() {
-        super(boolean.class, BooleanExpression::getValue);
+        super(boolean.class, BooleanExpression::getValue, false);
     }
     
     @Override
@@ -21,28 +20,13 @@ public class BooleanPropertyFieldParser extends AbstractFieldParser<Boolean, Boo
     
     @Override
     public Node createNode(final Class<?> clazz, final Field field, final Object target) {
-        try {
-            field.setAccessible(true);
-            boolean value = getValue(field, target);
-            
-            CheckBox checkBox = new CheckBox();
-            checkBox.selectedProperty().setValue(value);
-            checkBox.selectedProperty().addListener((ob, oldValue, newValue) -> {
-                try {
-                    field.setAccessible(true);
-                    setValue(field, target, newValue);
-                } catch (IllegalAccessException e) {
-                    LogHelper.error(null, e);
-                } finally {
-                    field.setAccessible(false);
-                }
-            });
-            return checkBox;
-        } catch (Exception e) {
-            LogHelper.error(null, e);
-            return null;
-        } finally {
-            field.setAccessible(false);
-        }
+        boolean value = getValue(field, target);
+        
+        CheckBox checkBox = new CheckBox();
+        checkBox.selectedProperty().setValue(value);
+        checkBox.selectedProperty().addListener((ob, oldValue, newValue) -> {
+            setValue(field, target, newValue);
+        });
+        return checkBox;
     }
 }

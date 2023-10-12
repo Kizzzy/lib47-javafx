@@ -10,5 +10,5 @@ public interface Register {
     
     AnchorPane createView();
     
-    void show(AnchorPane view, DisplayLoader loader, IPackage vfs, Leaf leaf);
+    void show(AnchorPane view, DisplayLoader loader, IPackage vfs, Leaf leaf) throws Exception;
 }

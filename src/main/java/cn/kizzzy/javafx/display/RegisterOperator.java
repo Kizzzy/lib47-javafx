@@ -3,13 +3,16 @@ package cn.kizzzy.javafx.display;
 import cn.kizzzy.base.AttributeWithInstance;
 import cn.kizzzy.clazz.ClassFilter;
 import cn.kizzzy.clazz.ClassFinderHelper;
-import cn.kizzzy.helper.LogHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 public class RegisterOperator implements Iterable<AttributeWithInstance<RegisterAttribute, Register>> {
+    
+    private static final Logger logger = LoggerFactory.getLogger(RegisterOperator.class);
     
     private final String namespace;
     
@@ -45,7 +48,7 @@ public class RegisterOperator implements Iterable<AttributeWithInstance<Register
             }
             
         } catch (Exception e) {
-            LogHelper.error(null, e);
+            logger.error("register error", e);
         }
     }
     

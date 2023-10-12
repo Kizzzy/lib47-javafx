@@ -2,7 +2,6 @@ package cn.kizzzy.javafx.setting.parser;
 
 import cn.kizzzy.config.FileType;
 import cn.kizzzy.config.Folder;
-import cn.kizzzy.helper.LogHelper;
 import javafx.beans.binding.StringExpression;
 import javafx.beans.property.StringProperty;
 import javafx.scene.Node;
@@ -20,7 +19,7 @@ import java.lang.reflect.Field;
 public class StringPropertyFieldParser extends AbstractFieldParser<String, StringProperty> {
     
     public StringPropertyFieldParser() {
-        super(String.class, StringExpression::getValue);
+        super(String.class, StringExpression::getValue, "");
     }
     
     @Override
@@ -30,80 +29,59 @@ public class StringPropertyFieldParser extends AbstractFieldParser<String, Strin
     
     @Override
     public Node createNode(final Class<?> clazz, final Field field, final Object target) {
-        try {
-            field.setAccessible(true);
-            String value = getValue(field, target);
-            
-            HBox hBox = new HBox();
-            hBox.setSpacing(8);
-            
-            TextField textField = new TextField();
-            textField.textProperty().setValue(value);
-            textField.textProperty().addListener((ob, oldValue, newValue) -> {
-                try {
-                    field.setAccessible(true);
-                    setValue(field, target, newValue);
-                } catch (IllegalAccessException e) {
-                    LogHelper.error(null, e);
-                } finally {
-                    field.setAccessible(false);
+        String value = getValue(field, target);
+        
+        HBox hBox = new HBox();
+        hBox.setSpacing(8);
+        
+        TextField textField = new TextField();
+        textField.textProperty().setValue(value);
+        textField.textProperty().addListener((ob, oldValue, newValue) -> {
+            setValue(field, target, newValue);
+        });
+        
+        textField.setOnDragOver(event -> event.acceptTransferModes(TransferMode.ANY));
+        textField.setOnDragDropped(event -> {
+            if (event.getDragboard().hasFiles()) {
+                for (File file : event.getDragboard().getFiles()) {
+                    if (file.isFile()) {
+                        textField.setText(file.getAbsolutePath());
+                    }
+                }
+            }
+        });
+        
+        hBox.getChildren().add(textField);
+        HBox.setHgrow(textField, Priority.ALWAYS);
+        
+        FileType file_ = field.getAnnotation(FileType.class);
+        if (file_ != null) {
+            Button button = new Button("浏览");
+            button.setOnAction(event -> {
+                FileChooser chooser = new FileChooser();
+                File file = chooser.showOpenDialog(null);
+                if (file != null) {
+                    textField.setText(file.getAbsolutePath());
                 }
             });
             
-            textField.setOnDragOver(event -> event.acceptTransferModes(TransferMode.ANY));
-            textField.setOnDragDropped(event -> {
-                if (event.getDragboard().hasFiles()) {
-                    for (File file : event.getDragboard().getFiles()) {
-                        if (file.isFile()) {
-                            textField.setText(file.getAbsolutePath());
-                        }
-                    }
-                }
-            });
-            
-            hBox.getChildren().add(textField);
-            HBox.setHgrow(textField, Priority.ALWAYS);
-            
-            FileType file_ = field.getAnnotation(FileType.class);
-            if (file_ != null) {
-                Button button = new Button("浏览");
-                button.setOnAction(event -> {
-                    FileChooser chooser = new FileChooser();
-                    File file = chooser.showOpenDialog(null);
-                    if (file != null) {
-                        textField.setText(file.getAbsolutePath());
-                    }
-                });
-                
-                hBox.getChildren().add(button);
-            }
-            
-            Folder folder = field.getAnnotation(Folder.class);
-            if (folder != null) {
-                Button button = new Button("浏览");
-                button.setOnAction(event -> {
-                    DirectoryChooser chooser = new DirectoryChooser();
-                    File file = chooser.showDialog(null);
-                    if (file != null) {
-                        textField.setText(file.getAbsolutePath());
-                    }
-                });
-                
-                hBox.getChildren().add(button);
-            }
-            
-            return hBox;
-        } catch (IllegalAccessException e) {
-            LogHelper.error(null, e);
-            return null;
-        } finally {
-            field.setAccessible(false);
+            hBox.getChildren().add(button);
         }
-    }
-    
-    @Override
-    protected String getValue(Field field, Object target) throws IllegalAccessException {
-        String val = super.getValue(field, target);
-        return val == null ? "" : val;
+        
+        Folder folder = field.getAnnotation(Folder.class);
+        if (folder != null) {
+            Button button = new Button("浏览");
+            button.setOnAction(event -> {
+                DirectoryChooser chooser = new DirectoryChooser();
+                File file = chooser.showDialog(null);
+                if (file != null) {
+                    textField.setText(file.getAbsolutePath());
+                }
+            });
+            
+            hBox.getChildren().add(button);
+        }
+        
+        return hBox;
     }
 }

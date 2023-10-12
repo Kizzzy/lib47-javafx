@@ -1,6 +1,5 @@
 package cn.kizzzy.javafx.plugin;
 
-import cn.kizzzy.helper.LogHelper;
 import javafx.stage.Stage;
 
 public interface Plugin {
@@ -24,7 +23,7 @@ public interface Plugin {
     }
     
     default void stop() {
-        LogHelper.info("[ " + getClass().getSimpleName() + " ] 已关闭");
+        System.out.printf("[ %s ] 已关闭%n", getClass().getSimpleName());
         
         if (getHolder() != null) {
             getHolder().remove(this);
