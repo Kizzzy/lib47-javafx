@@ -16,6 +16,8 @@
         
         <lib47-version>1.0-SNAPSHOT</lib47-version>
         <maven-compiler-plugin-version>3.5.1</maven-compiler-plugin-version>
+        
+        <junit.version>4.13.2</junit.version>
     </properties>
     
     <dependencies>
@@ -24,6 +26,20 @@
             <groupId>cn.kizzzy</groupId>
             <artifactId>lib47-vfs</artifactId>
             <version>${lib47-version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>cn.kizzzy</groupId>
+            <artifactId>lib47-json</artifactId>
+            <version>${lib47-version}</version>
+            <scope>test</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
         </dependency>
     
     </dependencies>

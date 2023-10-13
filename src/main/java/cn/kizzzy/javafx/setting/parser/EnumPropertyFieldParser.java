@@ -22,7 +22,7 @@ public class EnumPropertyFieldParser extends AbstractFieldParser<Enum<?>, Object
         Object value = getValue(field, target);
         
         ComboBox<Object> comboBox = new ComboBox<>();
-        comboBox.getItems().addAll(clazz.getEnumConstants());
+        comboBox.getItems().addAll(value.getClass().getEnumConstants());
         comboBox.valueProperty().setValue(value);
         comboBox.valueProperty().addListener((ob, oldValue, newValue) -> {
             setValue(field, target, (Enum<?>) newValue);
