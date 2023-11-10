@@ -4,7 +4,7 @@ import javafx.scene.Node;
 
 import java.lang.reflect.Field;
 
-public interface IFieldParser {
+public interface FieldParser {
     
     boolean accept(final Class<?> clazz);
     

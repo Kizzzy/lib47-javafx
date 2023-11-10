@@ -4,14 +4,16 @@ import cn.kizzzy.config.Ignore;
 import cn.kizzzy.javafx.JavafxControlParameter;
 import cn.kizzzy.javafx.JavafxView;
 import cn.kizzzy.javafx.Stageable;
+import cn.kizzzy.javafx.setting.parser.ArrayFieldParser;
 import cn.kizzzy.javafx.setting.parser.BooleanFieldParser;
 import cn.kizzzy.javafx.setting.parser.BooleanPropertyFieldParser;
 import cn.kizzzy.javafx.setting.parser.EnumFieldParser;
 import cn.kizzzy.javafx.setting.parser.EnumPropertyFieldParser;
-import cn.kizzzy.javafx.setting.parser.IFieldParser;
+import cn.kizzzy.javafx.setting.parser.FieldParser;
 import cn.kizzzy.javafx.setting.parser.IntegerFieldParser;
 import cn.kizzzy.javafx.setting.parser.IntegerPropertyFieldParser;
 import cn.kizzzy.javafx.setting.parser.ListFieldParser;
+import cn.kizzzy.javafx.setting.parser.MapFieldParser;
 import cn.kizzzy.javafx.setting.parser.StringFieldParser;
 import cn.kizzzy.javafx.setting.parser.StringPropertyFieldParser;
 import javafx.fxml.FXML;
@@ -65,7 +67,7 @@ public class SettingDialog extends SettingDialogView implements Initializable, S
     
     private Args args;
     private Stage stage;
-    private IFieldParser[] parsers;
+    private FieldParser[] parsers;
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -102,16 +104,20 @@ public class SettingDialog extends SettingDialogView implements Initializable, S
             transferArgs.shower = this::show;
             transferArgs.configs = args.configs;
             
-            parsers = new IFieldParser[]{
-                new EnumFieldParser(),
+            parsers = new FieldParser[]{
                 new EnumPropertyFieldParser(),
-                new BooleanFieldParser(),
+                new EnumFieldParser(),
                 new BooleanPropertyFieldParser(),
-                new StringFieldParser(),
+                new BooleanFieldParser(),
                 new StringPropertyFieldParser(),
-                new IntegerFieldParser(),
+                new StringFieldParser(),
                 new IntegerPropertyFieldParser(),
-                new ListFieldParser(transferArgs)
+                new IntegerFieldParser(),
+                new ArrayFieldParser(),
+                new ListFieldParser(transferArgs),
+                new MapFieldParser(),
+                // new ObjectPropertyFieldParser(),
+                // new ObjectFieldParser(),
             };
             
             show(root, args.target, args.configs);
@@ -160,7 +166,7 @@ public class SettingDialog extends SettingDialogView implements Initializable, S
             Class<?> fieldType = field.getType();
             
             boolean found = false;
-            for (IFieldParser parser : parsers) {
+            for (FieldParser parser : parsers) {
                 if (parser.accept(fieldType)) {
                     Node node = parser.createNode(fieldType, field, target);
                     if (node != null) {

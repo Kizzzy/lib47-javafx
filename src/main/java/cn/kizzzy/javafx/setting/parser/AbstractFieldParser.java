@@ -10,7 +10,7 @@ import java.lang.reflect.Method;
 import java.util.function.Function;
 
 @SuppressWarnings("unchecked")
-public abstract class AbstractFieldParser<PrimitiveType, WrapperType> implements IFieldParser {
+public abstract class AbstractFieldParser<PrimitiveType, WrapperType> implements FieldParser {
     
     protected static final Logger logger = LoggerFactory.getLogger(AbstractFieldParser.class);
     
