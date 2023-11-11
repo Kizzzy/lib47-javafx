@@ -1,8 +1,7 @@
 package cn.kizzzy.javafx.setting.parser;
 
-import cn.kizzzy.config.FileType;
-import cn.kizzzy.config.Folder;
 import cn.kizzzy.config.Password;
+import cn.kizzzy.config.Path;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
@@ -53,28 +52,22 @@ public abstract class StringFieldParserImpl<T> extends AbstractFieldParser<Strin
         hBox.getChildren().add(textField);
         HBox.setHgrow(textField, Priority.ALWAYS);
         
-        FileType fileType = field.getAnnotation(FileType.class);
-        if (fileType != null) {
+        Path path = field.getAnnotation(Path.class);
+        if (path != null) {
             Button button = new Button("浏览");
             button.setOnAction(event -> {
-                FileChooser chooser = new FileChooser();
-                File file = chooser.showOpenDialog(null);
-                if (file != null) {
-                    textField.setText(file.getAbsolutePath());
-                }
-            });
-            
-            hBox.getChildren().add(button);
-        }
-        
-        Folder folder = field.getAnnotation(Folder.class);
-        if (folder != null) {
-            Button button = new Button("浏览");
-            button.setOnAction(event -> {
-                DirectoryChooser chooser = new DirectoryChooser();
-                File file = chooser.showDialog(null);
-                if (file != null) {
-                    textField.setText(file.getAbsolutePath());
+                if (path.file()) {
+                    FileChooser chooser = new FileChooser();
+                    File file = path.save() ? chooser.showSaveDialog(null) : chooser.showOpenDialog(null);
+                    if (file != null) {
+                        textField.setText(file.getAbsolutePath());
+                    }
+                } else {
+                    DirectoryChooser chooser = new DirectoryChooser();
+                    File file = chooser.showDialog(null);
+                    if (file != null) {
+                        textField.setText(file.getAbsolutePath());
+                    }
                 }
             });
             
