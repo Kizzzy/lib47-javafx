@@ -2,6 +2,7 @@ package cn.kizzzy.javafx.setting;
 
 import cn.kizzzy.javafx.JavafxControl;
 import cn.kizzzy.javafx.JavafxControlParameter;
+import cn.kizzzy.javafx.setting.parser.FieldParserFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -28,16 +29,14 @@ public class SettingList extends SettingListView implements Initializable {
     
     private static final Logger logger = LoggerFactory.getLogger(SettingList.class);
     
-    private final TransferArgs args;
-    
     private final List<Object> list;
-    
     private final Class<?> clazz;
+    private final FieldParserFactory factory;
     
-    public SettingList(TransferArgs args, List<Object> list, Class<?> clazz) {
-        this.args = args;
+    public SettingList(List<Object> list, Class<?> clazz, FieldParserFactory factory) {
         this.list = list;
         this.clazz = clazz;
+        this.factory = factory;
         
         init();
     }
@@ -71,7 +70,7 @@ public class SettingList extends SettingListView implements Initializable {
     }
     
     private void addItem(Object obj) {
-        SettingListItem item = new SettingListItem(this, obj, args);
+        SettingListItem item = new SettingListItem(this, obj, factory);
         root.getChildren().add(item);
     }
 }

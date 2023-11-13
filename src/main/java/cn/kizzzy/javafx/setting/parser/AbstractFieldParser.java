@@ -31,12 +31,18 @@ public abstract class AbstractFieldParser<PrimitiveType, WrapperType> implements
             String methodName = "get" + StringHelper.firstUpper(field.getName());
             Method getter = target.getClass().getDeclaredMethod(methodName);
             return (PrimitiveType) getter.invoke(target);
-        } catch (Exception e) {
+        } catch (Exception e1) {
             try {
-                return fromFunc.apply((WrapperType) ReflectHelper.getValue(field, target));
+                String methodName = "is" + StringHelper.firstUpper(field.getName());
+                Method getter = target.getClass().getDeclaredMethod(methodName);
+                return (PrimitiveType) getter.invoke(target);
             } catch (Exception e2) {
-                logger.error("getValue error", e2);
-                return defaultValue;
+                try {
+                    return fromFunc.apply((WrapperType) ReflectHelper.getValue(field, target));
+                } catch (Exception e3) {
+                    logger.error("getValue error", e3);
+                    return defaultValue;
+                }
             }
         }
     }

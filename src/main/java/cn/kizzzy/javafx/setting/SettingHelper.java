@@ -1,29 +1,13 @@
 package cn.kizzzy.javafx.setting;
 
-import cn.kizzzy.config.Name;
-import cn.kizzzy.helper.StringHelper;
 import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SettingHelper {
-    
-    public static String getFieldName(Field field, SettingConfig config) {
-        Name name = field.getAnnotation(Name.class);
-        if (name != null) {
-            return name.alias();
-        }
-        
-        if (config != null && StringHelper.isNotNullAndEmpty(config.alias)) {
-            return config.alias;
-        }
-        
-        return field.getName();
-    }
     
     public static void adjustLabel(Pane root) {
         Platform.runLater(() -> adjustLabelFromRootImpl(root));

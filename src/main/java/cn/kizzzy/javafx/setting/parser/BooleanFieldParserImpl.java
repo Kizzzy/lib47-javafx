@@ -13,7 +13,7 @@ public abstract class BooleanFieldParserImpl<T> extends AbstractFieldParser<Bool
     }
     
     @Override
-    public Node createNode(final Class<?> clazz, final Field field, final Object target) {
+    public Node createNode(final FieldParserFactory factory, final Class<?> clazz, final Field field, final Object target) {
         boolean value = getValue(field, target);
         
         CheckBox checkBox = new CheckBox();

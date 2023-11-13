@@ -1,8 +1,7 @@
 package cn.kizzzy.javafx.setting.parser;
 
-import cn.kizzzy.javafx.setting.SettingConfig;
+import cn.kizzzy.config.Generic;
 import cn.kizzzy.javafx.setting.SettingList;
-import cn.kizzzy.javafx.setting.TransferArgs;
 import javafx.scene.Node;
 
 import java.lang.reflect.Field;
@@ -11,11 +10,8 @@ import java.util.function.Function;
 
 public class ListFieldParser extends AbstractFieldParser<List<Object>, List<Object>> {
     
-    private final TransferArgs args;
-    
-    public ListFieldParser(TransferArgs args) {
+    public ListFieldParser() {
         super(List.class, Function.identity(), null);
-        this.args = args;
     }
     
     @Override
@@ -24,24 +20,13 @@ public class ListFieldParser extends AbstractFieldParser<List<Object>, List<Obje
     }
     
     @Override
-    public Node createNode(final Class<?> clazz, final Field field, final Object target) {
-        if (args.configs == null) {
-            logger.error("SettingConfigs not found");
+    public Node createNode(final FieldParserFactory factory, final Class<?> clazz, final Field field, final Object target) {
+        Generic generic = field.getAnnotation(Generic.class);
+        if (generic == null) {
             return null;
         }
         
-        SettingConfig config = args.configs.selectById(target.getClass(), field.getName());
-        if (config == null) {
-            logger.error("SettingConfig not found");
-            return null;
-        }
-        
-        if (config.genericType == null) {
-            logger.error("GenericType of SettingConfig not found");
-            return null;
-        }
-        
-        List<Object> value = (List<Object>) getValue(field, target);
-        return new SettingList(args, value, config.genericType);
+        List<Object> value = getValue(field, target);
+        return new SettingList(value, generic.clazz(), factory);
     }
 }

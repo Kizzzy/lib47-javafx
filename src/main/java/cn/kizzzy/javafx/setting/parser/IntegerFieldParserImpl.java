@@ -18,7 +18,7 @@ public abstract class IntegerFieldParserImpl<T> extends AbstractFieldParser<Inte
     }
     
     @Override
-    public Node createNode(final Class<?> clazz, final Field field, final Object target) {
+    public Node createNode(final FieldParserFactory factory, final Class<?> clazz, final Field field, final Object target) {
         int value = getValue(field, target);
         
         Range range = field.getAnnotation(Range.class);

@@ -24,7 +24,7 @@ public abstract class StringFieldParserImpl<T> extends AbstractFieldParser<Strin
     }
     
     @Override
-    public Node createNode(final Class<?> clazz, final Field field, final Object target) {
+    public Node createNode(final FieldParserFactory factory, final Class<?> clazz, final Field field, final Object target) {
         String value = getValue(field, target);
         
         HBox hBox = new HBox();

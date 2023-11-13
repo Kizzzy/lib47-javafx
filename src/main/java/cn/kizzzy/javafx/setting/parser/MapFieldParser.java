@@ -19,7 +19,7 @@ public class MapFieldParser extends AbstractFieldParser<Map<?, ?>, Map<?, ?>> {
     }
     
     @Override
-    public Node createNode(final Class<?> clazz, final Field field, final Object target) {
+    public Node createNode(FieldParserFactory factory, final Class<?> clazz, final Field field, final Object target) {
         // todo
         return null;
     }

@@ -2,9 +2,11 @@ package cn.kizzzy.javafx.setting;
 
 import cn.kizzzy.javafx.JavafxControl;
 import cn.kizzzy.javafx.JavafxControlParameter;
+import cn.kizzzy.javafx.setting.parser.FieldParserFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 
@@ -24,15 +26,13 @@ abstract class SettingListItemView extends AnchorPane implements JavafxControl {
 public class SettingListItem extends SettingListItemView implements Initializable {
     
     private final SettingList settingList;
-    
     private final Object obj;
+    private final FieldParserFactory factory;
     
-    private final TransferArgs args;
-    
-    public SettingListItem(SettingList settingList, Object obj, TransferArgs args) {
+    public SettingListItem(SettingList settingList, Object obj, FieldParserFactory factory) {
         this.settingList = settingList;
         this.obj = obj;
-        this.args = args;
+        this.factory = factory;
         
         init();
     }
@@ -41,7 +41,10 @@ public class SettingListItem extends SettingListItemView implements Initializabl
     public void initialize(URL location, ResourceBundle resources) {
         removeBtn.setOnAction(this::onRemove);
         
-        args.shower.show(root, obj, args.configs);
+        Node child = factory.createNode(obj.getClass(), null, obj);
+        if (child != null) {
+            root.getChildren().add(child);
+        }
     }
     
     private void onRemove(ActionEvent actionEvent) {

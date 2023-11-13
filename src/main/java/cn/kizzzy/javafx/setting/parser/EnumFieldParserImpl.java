@@ -13,11 +13,11 @@ public abstract class EnumFieldParserImpl<T> extends AbstractFieldParser<Enum<?>
     }
     
     @Override
-    public Node createNode(final Class<?> clazz, final Field field, final Object target) {
+    public Node createNode(final FieldParserFactory factory, final Class<?> clazz, final Field field, final Object target) {
         Object value = getValue(field, target);
         
         ComboBox<Object> comboBox = new ComboBox<>();
-        comboBox.getItems().addAll(value.getClass().getEnumConstants());
+        comboBox.getItems().addAll((value != null ? value.getClass() : clazz).getEnumConstants());
         comboBox.valueProperty().setValue(value);
         comboBox.valueProperty().addListener((ob, oldValue, newValue) -> {
             setValue(field, target, (Enum<?>) newValue);

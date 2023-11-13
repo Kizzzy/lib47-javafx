@@ -13,12 +13,11 @@ public class ArrayFieldParser extends AbstractFieldParser<Object[], Object[]> {
     
     @Override
     public boolean accept(final Class<?> clazz) {
-        // todo
-        return false;
+        return clazz.isArray();
     }
     
     @Override
-    public Node createNode(final Class<?> clazz, final Field field, final Object target) {
+    public Node createNode(FieldParserFactory factory, final Class<?> clazz, final Field field, final Object target) {
         // todo
         return null;
     }
