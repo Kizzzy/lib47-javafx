@@ -3,12 +3,15 @@ package cn.kizzzy.javafx.display;
 import cn.kizzzy.base.AttributeWithClass;
 import cn.kizzzy.clazz.ClassFilter;
 import cn.kizzzy.clazz.ClassFinderHelper;
+import cn.kizzzy.helper.ByteHelper;
 import cn.kizzzy.helper.FileHelper;
+import cn.kizzzy.io.IFullyReader;
 import cn.kizzzy.vfs.IPackage;
 import cn.kizzzy.vfs.tree.Leaf;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,6 +28,9 @@ public class DisplayOperator {
     
     private final Map<String, List<AttributeWithClass<DisplayLoaderAttribute, DisplayLoader>>> displayKvs
         = new HashMap<>();
+    
+    private final List<AttributeWithClass<DisplayLoaderAttribute, DisplayLoader>> magics
+        = new ArrayList<>();
     
     public DisplayOperator(String namespace, DisplayTabView tabView) {
         this.namespace = namespace;
@@ -78,11 +84,15 @@ public class DisplayOperator {
         for (List<Class<?>> list : lists) {
             for (Class<?> clazz : list) {
                 DisplayLoaderAttribute attr = clazz.getAnnotation(DisplayLoaderAttribute.class);
-                for (String suffix : attr.suffix()) {
-                    List<AttributeWithClass<DisplayLoaderAttribute, DisplayLoader>> temp = displayKvs.computeIfAbsent(
-                        suffix, k -> new LinkedList<>()
-                    );
-                    temp.add(new AttributeWithClass<>(attr, (Class<? extends DisplayLoader>) clazz));
+                if (attr.suffix() != null) {
+                    for (String suffix : attr.suffix()) {
+                        List<AttributeWithClass<DisplayLoaderAttribute, DisplayLoader>> temp =
+                            displayKvs.computeIfAbsent(suffix, k -> new LinkedList<>());
+                        temp.add(new AttributeWithClass<>(attr, (Class<? extends DisplayLoader>) clazz));
+                    }
+                }
+                if (attr.magic() != null && attr.magic().length > 0) {
+                    magics.add(new AttributeWithClass<>(attr, (Class<? extends DisplayLoader>) clazz));
                 }
             }
         }
@@ -99,6 +109,19 @@ public class DisplayOperator {
                     DisplayLoader display = info.clazz.newInstance();
                     tabView.show(display, vfs, leaf);
                 } catch (InstantiationException | IllegalAccessException e) {
+                    logger.error("display error: ", e);
+                }
+            }
+        }
+        
+        for (AttributeWithClass<DisplayLoaderAttribute, DisplayLoader> info : magics) {
+            for (Magic magic : info.attr.magic()) {
+                try (IFullyReader reader = vfs.getInputStreamGetter(leaf.path).getInput()) {
+                    if (ByteHelper.equals(magic.getMagic(), reader.readBytes(magic.getLength()))) {
+                        DisplayLoader display = info.clazz.newInstance();
+                        tabView.show(display, vfs, leaf);
+                    }
+                } catch (Exception e) {
                     logger.error("display error: ", e);
                 }
             }

@@ -9,7 +9,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DisplayLoaderAttribute {
     
-    String[] suffix();
+    String[] suffix() default {};
+    
+    Magic[] magic() default {};
     
     int priority() default 0;
 }
