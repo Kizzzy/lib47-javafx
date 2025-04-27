@@ -33,16 +33,16 @@ abstract class LabeledTextFieldView extends JavafxView {
     
     // ----------------------------------------
     
-    public ObjectProperty<TextAlignment> titleTextAlignmentProperty() {
+    public ObjectProperty<TextAlignment> textAlignmentProperty() {
         return title.textAlignmentProperty();
     }
     
     public final void setTextAlignment(TextAlignment value) {
-        titleTextAlignmentProperty().setValue(value);
+        textAlignmentProperty().setValue(value);
     }
     
     public final TextAlignment getTextAlignment() {
-        return titleTextAlignmentProperty().get();
+        return textAlignmentProperty().get();
     }
     
     // ----------------------------------------
