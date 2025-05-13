@@ -1,0 +1,20 @@
+.button {
+    -fx-graphic: url("../icon/folder-24x24.png");
+
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+
+    -fx-border-width: 0;
+    -fx-border-radius: 0;
+
+    -fx-padding: 0;
+    -fx-max-width: 20;
+    -fx-max-height: 20;
+}
+
+.button:hover {
+    -fx-graphic: url("../icon/folder-24x24-hover.png");
+
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+}

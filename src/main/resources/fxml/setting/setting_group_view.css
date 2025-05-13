@@ -1,3 +1,9 @@
 .group-box {
-    -fx-border-color: black;
+    -fx-border-color: #4F4F4F;
+    -fx-border-radius: 0px;
+}
+
+.group-name {
+    -fx-opacity: 1;
+    -fx-background-color: #F4F4F4;
 }

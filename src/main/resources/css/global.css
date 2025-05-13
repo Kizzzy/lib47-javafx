@@ -18,11 +18,11 @@
     -fx-border-color: transparent;
 }
 
-.bg-transparent{
+.bg-transparent {
     -fx-background-color: transparent;
 }
 
-.bg-babyblue{
+.bg-babyblue {
     -fx-background-color: rgb(193, 210, 240);
 }
 
@@ -30,15 +30,15 @@
     -fx-background-color: #fbeab2;
 }
 
-.bg-goldenrod{
+.bg-goldenrod {
     -fx-background-color: #daa520;
 }
 
-.bg-mask{
+.bg-mask {
     -fx-background-color: rgba(64, 64, 64, 0.8);
 }
 
-.bg-popup{
+.bg-popup {
     -fx-background-color: #333333;
 }
 
@@ -73,15 +73,15 @@
     -fx-text-fill: white;
 }
 
-.button:hover{
+.button:hover {
     -fx-background-color: linear-gradient(#ff9900, #be1d00);
 }
 
-.close{
+.close {
     -fx-background-color: transparent;
     -fx-background-radius: 0;
 }
 
-.close:hover{
+.close:hover {
     -fx-background-color: rgb(255, 0, 0);
 }
