@@ -64,7 +64,7 @@ public class DisplayTabView extends TabPane {
                         tab.setCallback(() -> dataKvs.remove(awi));
                         
                         getTabs().add(tab);
-                        getSelectionModel().select(tab);
+                        // getSelectionModel().select(tab);
                         
                         data = new DisplayTabData(tab, view);
                         dataKvs.put(awi, data);
@@ -74,9 +74,9 @@ public class DisplayTabView extends TabPane {
                 }
                 
                 if (data != null) {
-                    if (!getPin()) {
-                        getSelectionModel().select(data.getTab());
-                    }
+                    // if (!getPin()) {
+                    //     getSelectionModel().select(data.getTab());
+                    // }
                     
                     try {
                         awi.instance.show(data.getView(), display, vfs, leaf);
