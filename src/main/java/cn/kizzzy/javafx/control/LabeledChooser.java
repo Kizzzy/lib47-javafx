@@ -1,5 +1,6 @@
 package cn.kizzzy.javafx.control;
 
+import cn.kizzzy.helper.FileHelper;
 import cn.kizzzy.helper.StringHelper;
 import cn.kizzzy.javafx.JavafxControlParameter;
 import cn.kizzzy.javafx.JavafxView;
@@ -52,7 +53,7 @@ abstract class LabeledChooserView extends JavafxView {
     // ----------------------------------------
     
     @FXML
-    protected Button button;
+    protected Button browser_btn;
     
     protected BooleanProperty showFolder;
     
@@ -70,6 +71,11 @@ abstract class LabeledChooserView extends JavafxView {
     public void setShowFolder(boolean showFolder) {
         showFolderProperty().set(showFolder);
     }
+    
+    // ----------------------------------------
+    
+    @FXML
+    protected Button open_btn;
 }
 
 @JavafxControlParameter(fxml = "/fxml/control/labeled_chooser.fxml")
@@ -77,10 +83,12 @@ public class LabeledChooser extends LabeledChooserView implements Initializable 
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        button.setOnAction(this::show);
+        browser_btn.setOnAction(this::onBrowser);
+        open_btn.setOnAction(event -> FileHelper.openFile(getContent()));
+        
     }
     
-    public File show(ActionEvent event) {
+    private File onBrowser(ActionEvent event) {
         Window window = getScene().getWindow();
         File file = isShowFolder() ?
             showOpenChooser(window, getContent()) :

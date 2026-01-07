@@ -2,6 +2,7 @@ package cn.kizzzy.javafx.setting.parser;
 
 import cn.kizzzy.config.Password;
 import cn.kizzzy.config.Path;
+import cn.kizzzy.helper.FileHelper;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -12,6 +13,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
@@ -30,8 +33,11 @@ public abstract class StringFieldParserImpl<T> extends AbstractFieldParser<Strin
     public Node createNode(final FieldParserFactory factory, final Class<?> clazz, final Field field, final Object target) {
         String value = getValue(field, target);
         
+        HBox hBox = new HBox();
+        hBox.getStylesheets().add(getClass().getResource("/css/button.css").toExternalForm());
+        hBox.setSpacing(8.0);
+        
         StackPane stackPane = new StackPane();
-        stackPane.getStylesheets().add(getClass().getResource("/css/button.css").toExternalForm());
         AnchorPane.setTopAnchor(stackPane, 0.0);
         AnchorPane.setRightAnchor(stackPane, 0.0);
         AnchorPane.setBottomAnchor(stackPane, 0.0);
@@ -57,12 +63,15 @@ public abstract class StringFieldParserImpl<T> extends AbstractFieldParser<Strin
         });
         
         stackPane.getChildren().add(textField);
+        hBox.getChildren().add(stackPane);
+        HBox.setHgrow(stackPane, Priority.ALWAYS);
         
         Path path = field.getAnnotation(Path.class);
         if (path != null) {
-            Button button = new Button("浏览");
-            button.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-            button.setOnAction(event -> {
+            Button browser = new Button("");
+            browser.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+            browser.getStyleClass().add("folder");
+            browser.setOnAction(event -> {
                 if (path.file()) {
                     FileChooser chooser = new FileChooser();
                     File file = path.save() ? chooser.showSaveDialog(null) : chooser.showOpenDialog(null);
@@ -78,12 +87,18 @@ public abstract class StringFieldParserImpl<T> extends AbstractFieldParser<Strin
                 }
             });
             
-            stackPane.getChildren().add(button);
+            stackPane.getChildren().add(browser);
             
-            StackPane.setAlignment(button, Pos.CENTER_RIGHT);
-            StackPane.setMargin(button, new Insets(0, 8, 0, 0));
+            StackPane.setAlignment(browser, Pos.CENTER_RIGHT);
+            StackPane.setMargin(browser, new Insets(0, 8, 0, 0));
+            
+            Button open = new Button("打开");
+            open.setMinWidth(48);
+            open.setOnAction(event -> FileHelper.openFile(textField.getText()));
+            
+            hBox.getChildren().add(open);
         }
         
-        return stackPane;
+        return hBox;
     }
 }

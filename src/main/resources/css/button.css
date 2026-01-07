@@ -1,4 +1,4 @@
-.button {
+.folder {
     -fx-graphic: url("../icon/folder-24x24.png");
 
     -fx-background-color: transparent;
@@ -12,7 +12,7 @@
     -fx-max-height: 20;
 }
 
-.button:hover {
+.folder:hover {
     -fx-graphic: url("../icon/folder-24x24-hover.png");
 
     -fx-background-color: transparent;
