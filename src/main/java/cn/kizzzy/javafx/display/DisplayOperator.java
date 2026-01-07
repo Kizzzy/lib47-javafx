@@ -87,7 +87,7 @@ public class DisplayOperator {
                 if (attr.suffix() != null) {
                     for (String suffix : attr.suffix()) {
                         List<AttributeWithClass<DisplayLoaderAttribute, DisplayLoader>> temp =
-                            displayKvs.computeIfAbsent(suffix, k -> new LinkedList<>());
+                            displayKvs.computeIfAbsent(suffix.toLowerCase(), k -> new LinkedList<>());
                         temp.add(new AttributeWithClass<>(attr, (Class<? extends DisplayLoader>) clazz));
                     }
                 }
@@ -101,7 +101,7 @@ public class DisplayOperator {
     }
     
     public void display(IPackage vfs, Leaf leaf) {
-        String ext = FileHelper.getExtension(leaf.path);
+        String ext = FileHelper.getExtension(leaf.path).toLowerCase();
         List<AttributeWithClass<DisplayLoaderAttribute, DisplayLoader>> temp = displayKvs.get(ext);
         if (temp != null) {
             for (AttributeWithClass<DisplayLoaderAttribute, DisplayLoader> info : temp) {

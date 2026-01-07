@@ -87,8 +87,10 @@ public class JavafxChooser {
         }
         
         File file = chooser.showDialog(window);
-        if (file != null && setter != null) {
-            this.setter.accept(file.getAbsolutePath());
+        if (file != null) {
+            if (setter != null) {
+                this.setter.accept(file.getAbsolutePath());
+            }
             
             if (callback != null) {
                 callback.accept(file);
@@ -115,8 +117,10 @@ public class JavafxChooser {
         }
         
         File file = chooser.showOpenDialog(window);
-        if (file != null && setter != null) {
-            this.setter.accept(file.getAbsolutePath());
+        if (file != null) {
+            if (setter != null) {
+                this.setter.accept(file.getParent());
+            }
             
             if (callback != null) {
                 callback.accept(file);
@@ -143,8 +147,10 @@ public class JavafxChooser {
         }
         
         File file = chooser.showSaveDialog(window);
-        if (file != null && setter != null) {
-            this.setter.accept(file.getAbsolutePath());
+        if (file != null) {
+            if (setter != null) {
+                this.setter.accept(file.getAbsolutePath());
+            }
             
             if (callback != null) {
                 callback.accept(file);
@@ -171,8 +177,10 @@ public class JavafxChooser {
         }
         
         List<File> files = chooser.showOpenMultipleDialog(window);
-        if (files != null && !files.isEmpty() && setter != null) {
-            this.setter.accept(files.get(0).getParent());
+        if (files != null && !files.isEmpty()) {
+            if (setter != null) {
+                this.setter.accept(files.get(0).getParent());
+            }
             
             if (callback != null) {
                 callback.accept(files);
